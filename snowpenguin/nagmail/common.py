@@ -5,6 +5,10 @@ class MailQueueParsingError(Exception):
         super(MailQueueParsingError, self).__init__(msg)
 
 class MailQueueInterface(metaclass=ABCMeta):
+
+    def __init__(self, data_generator):
+        self.data_generator = data_generator
+
     @abstractmethod
     def get_deferred_counter(self):
         pass
@@ -15,4 +19,8 @@ class MailQueueInterface(metaclass=ABCMeta):
 
     @abstractmethod
     def get_total_counter(self):
+        pass
+
+    @abstractmethod
+    def update(self):
         pass

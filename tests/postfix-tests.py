@@ -3,7 +3,8 @@ from nagmail.common import MailQueueParsingError
 
 from snowpenguin.nagmail.postfix import PostfixMailQueue
 
-mailq_example = \
+def mailq_data_generator():
+    return \
 """
 -Queue ID-     -Size- ----Arrival Time--- -Sender/Recipient-------
 3E968141EA6E*   26451 Tue Jan 16 16:33:58  stephen@quasarman.biz
@@ -31,16 +32,16 @@ CA3BA141AED2     4292 Tue Jan 16 14:55:35  info@chuckies.co.uk
 
 class PostfixQueueTest(unittest.TestCase):
     def test_parse_string(self):
-        pq = PostfixMailQueue()
+        pq = PostfixMailQueue(mailq_data_generator)
         try:
-            pq.parse_mailq_output(mailq_example)
+            pq.update()
             self.assertTrue(True)
         except MailQueueParsingError:
             self.assertTrue(False)
 
     def test_counters(self):
-        pq = PostfixMailQueue()
-        pq.parse_mailq_output(mailq_example)
+        pq = PostfixMailQueue(mailq_data_generator)
+        pq.update()
         self.assertTrue(
             pq.get_active_counter() == 2 and pq.get_deferred_counter() == 3 and pq.get_total_counter() == 6
         )

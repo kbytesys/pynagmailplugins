@@ -2,7 +2,8 @@ from .common import MailQueueInterface, MailQueueParsingError
 
 class PostfixMailQueue(MailQueueInterface):
 
-    def __init__(self):
+    def __init__(self, data_generator):
+        super(PostfixMailQueue, self).__init__(data_generator)
         self.deferred = 0
         self.active = 0
         self.total = 0
@@ -16,7 +17,9 @@ class PostfixMailQueue(MailQueueInterface):
     def get_total_counter(self):
         return self.total
 
-    def parse_mailq_output(self, mailq_output):
+    def update(self):
+
+        mailq_output = self.data_generator()
 
         self.deferred = 0
         self.active = 0
