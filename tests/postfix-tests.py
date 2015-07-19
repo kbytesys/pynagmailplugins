@@ -1,7 +1,8 @@
 import unittest
-from nagmail.common import MailQueueParsingError
+import nagiosplugin
+from nagmail.common import MailQueueDataFetchError
 
-from snowpenguin.nagmail.postfix import PostfixMailQueue
+from snowpenguin.nagmail.postfix import PostfixMailQueue, PostfixMailqFetcher
 
 def mailq_data_generator():
     return \
@@ -36,7 +37,7 @@ class PostfixQueueTest(unittest.TestCase):
         try:
             pq.update()
             self.assertTrue(True)
-        except MailQueueParsingError:
+        except MailQueueDataFetchError:
             self.assertTrue(False)
 
     def test_counters(self):
@@ -45,3 +46,15 @@ class PostfixQueueTest(unittest.TestCase):
         self.assertTrue(
             pq.get_active_counter() == 2 and pq.get_deferred_counter() == 3 and pq.get_total_counter() == 6
         )
+
+    def test_postfix_mailq(self):
+        pf = PostfixMailqFetcher(True)
+        pq = PostfixMailQueue(pf.get_data)
+        try:
+            pq.update()
+            self.assertTrue(True)
+        except MailQueueDataFetchError:
+            self.assertTrue(False)
+        except nagiosplugin.CheckError:
+            self.assertTrue(False)
+

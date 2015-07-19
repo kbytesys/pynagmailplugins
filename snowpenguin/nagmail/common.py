@@ -1,8 +1,8 @@
 from abc import ABCMeta, abstractmethod
 
-class MailQueueParsingError(Exception):
+class MailQueueDataFetchError(Exception):
     def __init__(self, msg):
-        super(MailQueueParsingError, self).__init__(msg)
+        super(MailQueueDataFetchError, self).__init__(msg)
 
 class MailQueueInterface(metaclass=ABCMeta):
 

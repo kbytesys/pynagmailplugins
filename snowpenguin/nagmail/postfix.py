@@ -1,4 +1,7 @@
-from .common import MailQueueInterface, MailQueueParsingError
+import io
+import subprocess
+
+from .common import MailQueueInterface, MailQueueDataFetchError
 
 class PostfixMailQueue(MailQueueInterface):
 
@@ -25,6 +28,9 @@ class PostfixMailQueue(MailQueueInterface):
         self.active = 0
         self.total = 0
 
+        if mailq_output is None:
+            return
+
         for line in mailq_output.split('\n'):
             if line is None or len(line) == 0 or line[0] not in "0123456789ABCDEF":
                 continue
@@ -42,3 +48,26 @@ class PostfixMailQueue(MailQueueInterface):
                 self.deferred += 1
 
 
+class PostfixMailqFetcher():
+    def __init__(self, use_sudo=False):
+        self.sudo = use_sudo
+
+    def get_data(self):
+
+        popen_target = ['sudo', 'mailq'] if self.sudo else ['mailq']
+
+        try:
+
+            p = subprocess.Popen(popen_target,
+                                 stderr=subprocess.PIPE,
+                                 stdin=subprocess.PIPE,
+                                 stdout=subprocess.PIPE)
+            pres, err = p.communicate()
+        except FileNotFoundError as e:
+            raise MailQueueDataFetchError(e)
+
+        if err:
+            raise MailQueueDataFetchError(err)
+
+        if pres:
+            return io.StringIO(pres.decode('utf-8'))
