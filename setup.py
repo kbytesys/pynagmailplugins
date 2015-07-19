@@ -2,7 +2,7 @@
 from setuptools import setup, find_packages
 setup(
     name='pynagmailplugins',
-    packages=find_packages(),
+    packages=find_packages(exclude=['docs', 'samples', 'tests']),
     version='0.0.1',
     #scripts=['bin/pynagsystemd.py'],
     install_requires=[
