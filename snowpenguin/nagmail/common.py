@@ -10,11 +10,23 @@ class MailQueueInterface(metaclass=ABCMeta):
         self.data_generator = data_generator
 
     @abstractmethod
+    def has_deferred_counter(self):
+        pass
+
+    @abstractmethod
     def get_deferred_counter(self):
         pass
 
     @abstractmethod
+    def has_active_counter(self):
+        pass
+
+    @abstractmethod
     def get_active_counter(self):
+        pass
+
+    @abstractmethod
+    def has_total_counter(self):
         pass
 
     @abstractmethod

@@ -3,25 +3,22 @@ import subprocess
 
 from .common import MailQueueInterface, MailQueueDataFetchError
 
-class PostfixMailQueue(MailQueueInterface):
-
+class EximMailQueue(MailQueueInterface):
     def __init__(self, data_generator):
-        super(PostfixMailQueue, self).__init__(data_generator)
-        self.deferred = 0
-        self.active = 0
+        super(EximMailQueue, self).__init__(data_generator)
         self.total = 0
 
     def has_deferred_counter(self):
-        return True
+        return False
 
     def get_deferred_counter(self):
-        return self.deferred
+        return 0
 
     def has_active_counter(self):
-        return True
+        return False
 
     def get_active_counter(self):
-        return self.active
+        return 0
 
     def has_total_counter(self):
         return True
@@ -33,37 +30,23 @@ class PostfixMailQueue(MailQueueInterface):
 
         mailq_output = self.data_generator()
 
-        self.deferred = 0
-        self.active = 0
-        self.total = 0
-
         if mailq_output is None:
             return
 
-        for line in mailq_output.split('\n'):
-            if line is None or len(line) == 0 or line[0] not in "0123456789ABCDEF":
-                continue
+        for line in mailq_output:
+            try:
+                self.total = int(line)
+                break
+            except ValueError as e:
+                raise MailQueueDataFetchError(e)
 
-            queue_item = line.split(' ')
-            queue_item_id = queue_item[0]
-
-            self.total += 1
-
-            if queue_item_id.endswith('*'):
-                self.active += 1
-            elif queue_item_id.endswith('!'):
-                pass
-            else:
-                self.deferred += 1
-
-
-class PostfixMailqFetcher():
+class EximMailqFetcher:
     def __init__(self, use_sudo=False):
         self.sudo = use_sudo
 
     def get_data(self):
 
-        popen_target = ['sudo', 'mailq'] if self.sudo else ['mailq']
+        popen_target = ['sudo', 'mailq', '-bpc'] if self.sudo else ['mailq', '-bpc']
 
         try:
 

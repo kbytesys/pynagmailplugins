@@ -11,9 +11,14 @@ class MailQueue(nagiosplugin.Resource):
     def probe(self):
         self.mailq_interface.update()
 
-        yield nagiosplugin.Metric('total', self.mailq_interface.get_total_counter(), min=0)
-        yield nagiosplugin.Metric('active', self.mailq_interface.get_active_counter(), min=0)
-        yield nagiosplugin.Metric('deferred', self.mailq_interface.get_deferred_counter(), min=0)
+        if self.mailq_interface.has_total_counter():
+            yield nagiosplugin.Metric('total', self.mailq_interface.get_total_counter(), min=0)
+
+        if self.mailq_interface.has_active_counter():
+            yield nagiosplugin.Metric('active', self.mailq_interface.get_active_counter(), min=0)
+
+        if self.mailq_interface.has_deferred_counter():
+            yield nagiosplugin.Metric('deferred', self.mailq_interface.get_deferred_counter(), min=0)
 
 def create_mailq_check(mq_interface, total_warning, total_critical, deferred_warning, deferred_critical):
 
