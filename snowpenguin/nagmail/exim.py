@@ -40,6 +40,8 @@ class EximMailQueue(MailQueueInterface):
             except ValueError as e:
                 raise MailQueueDataFetchError(e)
 
+MailQueueInterface.register(EximMailQueue)
+
 class EximMailqFetcher:
     def __init__(self, use_sudo=False):
         self.sudo = use_sudo

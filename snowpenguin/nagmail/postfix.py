@@ -57,6 +57,8 @@ class PostfixMailQueue(MailQueueInterface):
                 self.deferred += 1
 
 
+MailQueueInterface.register(PostfixMailQueue)
+
 class PostfixMailqFetcher():
     def __init__(self, use_sudo=False):
         self.sudo = use_sudo
