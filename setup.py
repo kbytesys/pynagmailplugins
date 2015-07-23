@@ -3,6 +3,7 @@ from setuptools import setup, find_packages
 setup(
     name='pynagmailplugins',
     packages=find_packages(exclude=['docs', 'samples', 'tests']),
+    namespace_packages=['snowpenguin'],
     version='0.0.1',
     scripts=['bin/check_mailq.py'],
     install_requires=[
