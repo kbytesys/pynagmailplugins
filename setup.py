@@ -4,7 +4,7 @@ setup(
     name='pynagmailplugins',
     packages=find_packages(exclude=['docs', 'samples', 'tests']),
     namespace_packages=['snowpenguin'],
-    version='0.0.2',
+    version='0.0.3',
     scripts=['bin/check_mailq.py'],
     install_requires=[
         'nagiosplugin>=1.2',
@@ -13,7 +13,7 @@ setup(
     author='Andrea Briganti',
     author_email='kbytesys@gmail.com',
     url='https://github.com/kbytesys/pynagmailplugins',
-    download_url='https://github.com/kbytesys/pynagmailplugins/tarball/v0.0.2',
+    download_url='https://github.com/kbytesys/pynagmailplugins/tarball/v0.0.3',
     keywords=['nagios', 'systemd', 'postfix', 'mail'],
     license='GNU GPL v2',
     classifiers=[
