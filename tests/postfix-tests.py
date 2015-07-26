@@ -29,7 +29,7 @@ CA3BA141AED2     4292 Tue Jan 16 14:55:35  info@chuckies.co.uk
 (host mx4.gatech.edu[130.207.165.59] said: 450 : Sender address rejected: Domain not found (in reply to RCPT TO command))
                                          mschmits@eas.gatech.edu
 
-"""
+""".split("\n")
 
 class PostfixQueueTest(unittest.TestCase):
     def test_parse_string(self):

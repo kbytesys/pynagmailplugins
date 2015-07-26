@@ -40,7 +40,7 @@ class PostfixMailQueue(MailQueueInterface):
         if mailq_output is None:
             return
 
-        for line in mailq_output.split('\n'):
+        for line in mailq_output:
             if line is None or len(line) == 0 or line[0] not in "0123456789ABCDEF":
                 continue
 

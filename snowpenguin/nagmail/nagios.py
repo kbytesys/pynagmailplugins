@@ -30,7 +30,6 @@ def create_mailq_check(mq_interface, total_warning, total_critical, deferred_war
         check.add(nagiosplugin.ScalarContext('total', total_warning, total_critical))
 
     if mq_interface.has_active_counter():
-        print(mq_interface)
         check.add(nagiosplugin.ScalarContext('active', total_warning, total_critical))
 
     if mq_interface.has_deferred_counter():
